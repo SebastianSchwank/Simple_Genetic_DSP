@@ -1,4 +1,11 @@
-/* Basic IO (@Param: "-Files:" ):
+/* 
+	Project Name (@Param "-ProjName:"):
+				The ProjName specifies the Name of the Project or determines the Path to a already existing Project.
+				The suffix for the Project files is ".dspg"
+				
+				Syntax : DSPGen.out -ProjName: myProjects/myProject.dspg
+				
+	Basic IO (@Param: "-Files:" ):
 				Basic acess is given by passing pairs of .wav Files to the Application via Commandline:
 					
 					- The first one is the given INPUT File which is the "source"-Signal for the "calculation-graphs" beeing generaterated
@@ -10,10 +17,12 @@
 							- only .wav-Files are supported
 							- All Input Files must have the same length !!!
 							- All Target Files must have the same length !!!
+							
 */
 
 
 #include <iostream>
+#include "DSPGen.h"
 
 int main(int argc, char *argv[]){
 	
