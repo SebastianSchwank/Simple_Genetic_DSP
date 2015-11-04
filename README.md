@@ -2,22 +2,29 @@
 
 This Framework should provide the abitlity to envolve a "calculation-graph" from a set of input->target signals minimizing the processing error through genetic algorythms.
 
-
-
-
 #DNA-Structure
 
 The basic gene structure consists of four Types of Objects:
 
-- Operators ( J = Join | B = Branch | M = Modify)
-		J: The Join Operator joins one or more different Nodes together by an given Modificator eg. f(x,y,z)
-		B: The Branch Operator branches a Data Stream into two ore more other streams. The Transterminale it branches into is given by the "~" - Adressator
+- Operators ( J = Join | M = Modify)
+		J: The Join Operator joins one or more different Nodes together by an given Modificator eg. f(x,y)
 		M: The Modify Operator modifies one singel Data Stream with a given Function f(x)
 		
-- Modificators ( + , - , * ... )
-		A modificator is a general mathematic function which determines the how the given input is processed
+- Weighted Arethmetics ( + , - , * , < , > , exp, sin )
+		A Weighted Aretmetic should provide the possibility to calculatate an Error for a Aretmetic operation.
+		The generall arethmetic is described as following:
 		
-- Adressators & Constants ( @# = Input | @$ = Target | @~ = Transterminal & @c=FloatNumber)
+			- f(x,y) = w(+)*(x+y) + w(*)*(x*y) + w(<)*(x<y) + w(>)*(x>y)
+			... for the J Operator
+			and
+			- f(x) =  w(+)*(+x) + w(-)*(-x) + w(sin)*(sin(x)) + w(exp)*(exp(x))
+			... for the M Operator
+			
+			So each node is described by an weighted operation defined by a weight-vector v4b which will be modiefied later by evaluation and correction.
+			Note that the v4 - weight vector is normed after each modification to the length 1 so that the maximal amount of one arethmetic is limited to 1
+			whereas the other arethmetics fall to 0.
+		
+- Adressators & Constants ( # = Input | $ = Target | ~ = Transterminal & c = ConstantFloatNumber)
 		# : The Input-Adressators refers to a given Input adressed by "#" followed by the Index of the Inputcell
 		$ : The Target-Adressator refers to a given Target adressed by "$" followed by the Index of the Targetcell
 		~ : The Transterminal-Adressator is a genericly generated Adress Point which is generated in runtime its weather a targetcell nor a inputcell
@@ -26,3 +33,55 @@ The basic gene structure consists of four Types of Objects:
 - Allocator & Sepperator ( = & ; )
 		= : The allocator links the given Adressators to the operation given on the right side of the equation
 		; : The sepperator sepperates the Arguments from each other
+		
+	Example:
+		The input length is given as two cells, The output length is defined as one cell so here's a code-example describing a process:
+		
+		~0		= J(0.32;...)[#0;#1]
+		~1 		= M(...)[~0]
+		~2		= J(...)[#0;c=3.1415]
+		~3		= J(...)[~1;~0]
+		~4		= J(...)[~2;~1]
+		$0		= J(...)[~3;~4]
+		
+	Notes:
+			- Every line of code represents a node in the graph
+			- Branching is made by using the same ~/Transterminal multible times
+			- The order of the Nodes is determined by the Transterminals which are already declared
+			- Only TWO (2) Transterminals can be joined at the same time
+			- Branching is not restricted
+			
+#Random Inital Population Generation
+
+The inital population is generated as following:
+	
+	1st:	Generate a empty Input Target Graph.
+	2nd:	Generate several Transterminals wheras the number of Transterminals is limited by a PARAMETER defined by the user.
+	3rd:	Generate a varying number of lines of Code wheras the Adressators are choosen randomly from the pool of existing Adressators
+			and the Operats and Modificators are choosen randomly.
+			The maximal number of codelines is limited by a user-choosen PARAMETER.
+
+
+
+#Selection Algorythm (Global Selection)
+
+Two selection algorythms are provided by the programm both are determined by the parameter "n" which is the number of individuals which remain in the DNA-Pool for population:
+
+	1st: Russian Roulett elemination till "n" GraphIs' remain. Higher error causes higher probability to be eleminated.
+	2nd: Take the "n" top GraphIs' with the lowerst error.
+	
+#Crossing (Local Selection)
+
+The crossing is basically done by local error evaluation whereas we have one dominating DNA which is ---more likely--- to push trough is a part of the graph with the lower error.
+The error is calculated backwards through the graph whereas each node of the Graph gets a Error-Quantifier depending on input and the error to the target.
+The Error-Quantifiers are accumulated over the several Input Target exercises the Graph has to solve for survial.
+The exact process is described below:
+
+(Prenote: Mutations are not included at this point !!)
+(4Me_PapesToRead: http://www.math.drexel.edu/~tolya/propagationarithmetic.pdf)
+		
+	1st: Evaluationg an Error-Quantifier for each Node
+			
+			- For that :
+	
+#Mutation (Local Modifications)
