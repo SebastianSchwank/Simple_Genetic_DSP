@@ -17,7 +17,7 @@ The basic gene structure consists of four Types of Objects:
 			- f(x,y) = w(+)*(x+y) + w(*)*(x*y) + w(<)*(x<y) + w(>)*(x>y)
 			... for the J Operator
 			and
-			- f(x) =  w(+)*(+x) + w(-)*(-x) + w(sin)*(sin(x)) + w(exp)*(exp(x))
+			- f(x) =  w(+)*(+x) + w(-)*(-x) + w(sig)*(sigmoid(x)) + w(exp)*(exp(x))
 			... for the M Operator
 			
 			So each node is described by an weighted operation defined by a weight-vector v4b which will be modiefied later by evaluation and correction.
@@ -82,6 +82,56 @@ The exact process is described below:
 		
 	1st: Evaluationg an Error-Quantifier for each Node
 			
-			- For that :
+			!!! Warning !!! Experimental - Theory : 
+							In this approach i'll use a stocatical iterative algorythm to get the Error-Quantifier for each symbol in the DNA Code
+							For that we'll have to make some experimental hypotheses which could be emphasize as wrong. So note that from this point the Programm could be completly false.
+							It's just a coding experiment so join me on this journey if you want to.
+							
+							1.0 The "everything is any before it's prooven wrong"-hypotheses:
+										The problem you could see when try to backpropagate the calculated error through the Graph is how to distribute it "correctly" in the graph.
+										So what is "correctly" ? In my case the correctness of the number behind the equation is not so important.
+										It's more important that the propotions between the numbers are approximated fast and these numbers are meaningful and compareable to each other and between
+										different Graphs.
+										
+										So lets make a weired try to get these numbers:
+										
+										$0 = J(0.32;...)[#0;#1]
+										The target is defined as:
+										$0 = J(1.0;0.0;0.0;0.0)[#0;#1]
+										
+										So here the first approach is to modifie the weighted arethmetic correctly (or as best as we get it).
+										So the equations we've now is:
+										
+										Error = Output - Target
+										whereas:
+										Output = w(+)*(x+y) + w(*)*(x*y) + w(<)*(x<y) + w(>)*(x>y)
+										
+										So if we suppose that Error(y) = 0.0 and Error(x) = 0.0 but Error(Output) = E(xoy) we have to adjust the weights in a way we get less error.
+										But how we can find that "way" ?
+										Let's try it with a random momentum driven error weighted approach we already know from neural networks. Basically it works like:
+										
+										If my next random step is better in error than the last one was add him highly to the new weights. If not so add him less high to the new weights.
+										
+										The "highness" or "lowness" of the random step is basically defined a function over the current Error (@Me_search4theBestFittingFunction).
+										So in general the random momentum error minimasation looks like:
+										
+										weights_n+1 = normalize( weights_n + momentum )
+										
+										whereas the momentum is defined recursivly as:
+										
+										momentum = momentum + sigmoid(Error_n) * normalize( randomChoosenVector[0..1] )
+										
+										For the evaluation of the "completness" of the graph we need another variable determine the JITTERING of the momentum. Lower jittering indicates that the nod is stable
+										higher jittering indicates that we have to change something "around" the node for that we introduce a fluctuation factor flux.
+										
+										flux = flux + momentum + sigmoid(Error_n) *
+										
+										
+										For that we trace ONE Path of the error backwards assuming that the other Path is already calculated correctly (what we can assume bcs. the other branch is linked to the input).
+							
+							
+							
+							
+							
 	
 #Mutation (Local Modifications)
