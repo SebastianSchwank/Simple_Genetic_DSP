@@ -61,7 +61,7 @@ The inital population is generated as following:
 			and the Operats and Modificators are choosen randomly.
 			The maximal number of codelines is limited by a user-choosen PARAMETER.
 
-
+#Global Error Evaluation
 
 #Selection Algorythm (Global Selection)
 
@@ -83,7 +83,7 @@ The exact process is described below:
 	1st: Evaluationg an Error-Quantifier for each Node
 			
 			!!! Warning !!! Experimental - Theory : 
-							In this approach i'll use a stocatical iterative algorythm to get the Error-Quantifier for each symbol in the DNA Code
+							In this approach i'll use a stocatical iterative algorythm to get the Error-Quantifier for each Node in the DNA Code
 							For that we'll have to make some experimental hypotheses which could be emphasize as wrong. So note that from this point the Programm could be completly false.
 							It's just a coding experiment so join me on this journey if you want to.
 							

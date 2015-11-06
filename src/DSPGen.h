@@ -12,6 +12,7 @@ class DSPGen
 	public:
 		//@Constructor_DSPGen:
 		//To create the DSPGen pass EQUAL NUMBER of Source/Target - SignalPaths to the constructor
+		//Note that ALL signals must have the same length !
 		//Set the Project-Name by hand over the last Parameter to a NAME for the Project
 		DSPGen(vector<string> PathsToSourceSignals, vector<string> PathsToTargetSignals, string ProjName);
 		

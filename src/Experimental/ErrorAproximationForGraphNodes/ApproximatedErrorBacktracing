@@ -1,0 +1,40 @@
+//This pape describes an experimaental approach to trace The error calculatet by output-target backwards through
+//the given graph.
+
+
+Therfore we've to make two suggestions:
+
+	- A Error can traced backwards through a Join-Node by assuming that respectively the error is distributed equally on both sides.
+	
+		So for the Error eOut and the given arethmetic (+) we can do the first approximation:
+			
+			//---------------------------------------------------------------------------------------------
+			For(+):
+			eOut = eIn0 + eIn1
+			wheras :
+			eIn0 = 0.5*eOut = eIn1 = 0.5*eOut
+			
+			For (*):
+			eOut = eIn0 * eIn1
+			
+			so here we have:
+			eIn0 = sqrt(eOut) = eIn1 = sqrt(eOut)
+			
+			/----------------------------------------------------------------------------------------------
+			
+			For the given Formula:
+			eOut = w(+)*(eIn0 + eIn1) + w(*)*(eIn0 * eIn1)
+			we get after some calculations:
+			eOut = w(+)*eIn0 + w(+)*eIn1 + w(*)* eIn0 * eIn1
+			we still assume:
+			eIn0 = eIn1 = eIn
+			for that:
+			eOut = w(+)*eIn + w(+)*eIn + w(*)* eIn * eIn
+			eOut = 2*w(+)*eIn+w(*)*eIn²
+			so because i'm to silly to give the correct answer, I'll use sampling to approximate it:
+			
+			wo with p(+) = w(+) we'll have : eIn0 = 0.5*eOut = eIn1 = 0.5*eOut
+			with p(*) = w(*) we'll have	   : eIn0 = sqrt(eOut) = eIn1 = sqrt(eOut)
+			
+			So ErrNode = ErrOutput
+			and ErrIn1 = ErrIn0 = sampleOverOperatorsWith(p(Operator))
